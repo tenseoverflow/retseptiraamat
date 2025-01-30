@@ -2,14 +2,7 @@
 
 Retseptiraamat on Blazor veebirakendus, mis aitab hallata ja jagada retsepte ning hoida silma peal külmkapis olevatel toiduainetel.
 
-## Omadused
-
-- Lisa, redigeeri ja kustuta retsepte
-- Kategoriseeri retsepte tüübi järgi
-- Otsi retsepte nime või koostisosade järgi
-- Jaga retsepte teistega
-- Hoia arvestust külmkapis olevate toiduainete üle
-- Soovita retsepte olemasolevate koostisosade põhjal
+https://www.youtube.com/watch?v=NbfhbDKiFpM
 
 ## Alustamine
 
