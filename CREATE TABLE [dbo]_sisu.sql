@@ -1,0 +1,8 @@
+CREATE TABLE [dbo].[sisu]
+(
+    [Id] INT IDENTITY (1, 1) NOT NULL,
+    [Tooraine] VARCHAR (MAX) NOT NULL,
+    [Kogus] INT CONSTRAINT [DEFAULT_sisu_Kogus] DEFAULT 1 NOT NULL,
+    CONSTRAINT [PK_sisu] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+

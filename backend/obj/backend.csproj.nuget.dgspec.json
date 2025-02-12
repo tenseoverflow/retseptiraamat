@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/home/hen/Projects/retseptiraamat/backend/backend.csproj": {}
+    "D:\\Data\\Documents\\Projects\\retseptiraamat\\backend\\backend.csproj": {}
   },
   "projects": {
-    "/home/hen/Projects/retseptiraamat/backend/backend.csproj": {
+    "D:\\Data\\Documents\\Projects\\retseptiraamat\\backend\\backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/hen/Projects/retseptiraamat/backend/backend.csproj",
+        "projectUniqueName": "D:\\Data\\Documents\\Projects\\retseptiraamat\\backend\\backend.csproj",
         "projectName": "backend",
-        "projectPath": "/home/hen/Projects/retseptiraamat/backend/backend.csproj",
-        "packagesPath": "/home/hen/.nuget/packages/",
-        "outputPath": "/home/hen/Projects/retseptiraamat/backend/obj/",
+        "projectPath": "D:\\Data\\Documents\\Projects\\retseptiraamat\\backend\\backend.csproj",
+        "packagesPath": "C:\\Users\\hen\\.nuget\\packages\\",
+        "outputPath": "D:\\Data\\Documents\\Projects\\retseptiraamat\\backend\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/hen/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\hen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -32,7 +38,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -66,7 +78,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
