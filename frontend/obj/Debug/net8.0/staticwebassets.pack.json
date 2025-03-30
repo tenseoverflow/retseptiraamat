@@ -1,23 +1,23 @@
 {
   "Files": [
     {
-      "Id": "/home/hen/Projects/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/projectbundle/frontend.bundle.scp.css",
+      "Id": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/projectbundle/frontend.bundle.scp.css",
       "PackagePath": "staticwebassets/frontend.bundle.scp.css"
     },
     {
-      "Id": "/home/hen/Projects/retseptiraamat/frontend/wwwroot/app.css",
+      "Id": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/app.css",
       "PackagePath": "staticwebassets/app.css"
     },
     {
-      "Id": "/home/hen/Projects/retseptiraamat/frontend/wwwroot/bootstrap/bootstrap.min.css",
+      "Id": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/bootstrap/bootstrap.min.css",
       "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css"
     },
     {
-      "Id": "/home/hen/Projects/retseptiraamat/frontend/wwwroot/bootstrap/bootstrap.min.css.map",
+      "Id": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/bootstrap/bootstrap.min.css.map",
       "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css.map"
     },
     {
-      "Id": "/home/hen/Projects/retseptiraamat/frontend/wwwroot/favicon.png",
+      "Id": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/favicon.png",
       "PackagePath": "staticwebassets/favicon.png"
     },
     {

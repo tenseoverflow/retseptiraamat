@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "arneb0DBd6jJdyIu2cq2vHRXWST7VfQTpMTNnfZuAQs=",
+  "Hash": "tgNNJcnvR+D3vIkumYRPHrcSUC3BrB5de70mpt9pEi0=",
   "Source": "frontend",
   "BasePath": "_content/frontend",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "frontend/wwwroot",
       "Source": "frontend",
-      "ContentRoot": "/home/hen/Projects/retseptiraamat/frontend/wwwroot/",
+      "ContentRoot": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/",
       "BasePath": "_content/frontend",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "/home/hen/Projects/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/bundle/frontend.styles.css",
+      "Identity": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/bundle/frontend.styles.css",
       "SourceId": "frontend",
       "SourceType": "Computed",
-      "ContentRoot": "/home/hen/Projects/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/bundle/",
+      "ContentRoot": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/bundle/",
       "BasePath": "_content/frontend",
       "RelativePath": "frontend.styles.css",
       "AssetKind": "All",
@@ -33,13 +33,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/home/hen/Projects/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/bundle/frontend.styles.css"
+      "OriginalItemSpec": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/bundle/frontend.styles.css"
     },
     {
-      "Identity": "/home/hen/Projects/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/projectbundle/frontend.bundle.scp.css",
+      "Identity": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/projectbundle/frontend.bundle.scp.css",
       "SourceId": "frontend",
       "SourceType": "Computed",
-      "ContentRoot": "/home/hen/Projects/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/projectbundle/",
+      "ContentRoot": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/projectbundle/",
       "BasePath": "_content/frontend",
       "RelativePath": "frontend.bundle.scp.css",
       "AssetKind": "All",
@@ -52,13 +52,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/home/hen/Projects/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/projectbundle/frontend.bundle.scp.css"
+      "OriginalItemSpec": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/obj/Debug/net8.0/scopedcss/projectbundle/frontend.bundle.scp.css"
     },
     {
-      "Identity": "/home/hen/Projects/retseptiraamat/frontend/wwwroot/app.css",
+      "Identity": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/app.css",
       "SourceId": "frontend",
       "SourceType": "Discovered",
-      "ContentRoot": "/home/hen/Projects/retseptiraamat/frontend/wwwroot/",
+      "ContentRoot": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/",
       "BasePath": "_content/frontend",
       "RelativePath": "app.css",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot/app.css"
     },
     {
-      "Identity": "/home/hen/Projects/retseptiraamat/frontend/wwwroot/bootstrap/bootstrap.min.css",
+      "Identity": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/bootstrap/bootstrap.min.css",
       "SourceId": "frontend",
       "SourceType": "Discovered",
-      "ContentRoot": "/home/hen/Projects/retseptiraamat/frontend/wwwroot/",
+      "ContentRoot": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/",
       "BasePath": "_content/frontend",
       "RelativePath": "bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot/bootstrap/bootstrap.min.css"
     },
     {
-      "Identity": "/home/hen/Projects/retseptiraamat/frontend/wwwroot/bootstrap/bootstrap.min.css.map",
+      "Identity": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/bootstrap/bootstrap.min.css.map",
       "SourceId": "frontend",
       "SourceType": "Discovered",
-      "ContentRoot": "/home/hen/Projects/retseptiraamat/frontend/wwwroot/",
+      "ContentRoot": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/",
       "BasePath": "_content/frontend",
       "RelativePath": "bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -112,10 +112,10 @@
       "OriginalItemSpec": "wwwroot/bootstrap/bootstrap.min.css.map"
     },
     {
-      "Identity": "/home/hen/Projects/retseptiraamat/frontend/wwwroot/favicon.png",
+      "Identity": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/favicon.png",
       "SourceId": "frontend",
       "SourceType": "Discovered",
-      "ContentRoot": "/home/hen/Projects/retseptiraamat/frontend/wwwroot/",
+      "ContentRoot": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/",
       "BasePath": "_content/frontend",
       "RelativePath": "favicon.png",
       "AssetKind": "All",
