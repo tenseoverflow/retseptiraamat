@@ -1,7 +1,33 @@
 ﻿@page "/"
+@inject AppDbContext Db
 
-<PageTitle>Home</PageTitle>
+<h3>Mis sul külmkapis on?</h3>
 
-<h1>Hello, world!</h1>
+<input @bind="ingredientInput" placeholder="Sisesta koostisosad" />
+<button @onclick="FindRecipes">Otsi retsepte</button>
 
-Welcome to your new app.
+@if (foundRecipes.Any())
+{
+    <h4>Leitud retseptid:</h4>
+    <ul>
+        @foreach (var recipe in foundRecipes)
+        {
+            <li>@recipe.Name</li>
+        }
+    </ul>
+}
+
+@code {
+    private string ingredientInput = "";
+    private List<Recipe> foundRecipes = new();
+
+    private async Task FindRecipes()
+    {
+        var allRecipes = await Db.Recipes.Include(r => r.Ingredients).ToListAsync();
+        var inputIngredients = ingredientInput.Split(',').Select(i => i.Trim().ToLower()).ToList();
+
+        foundRecipes = allRecipes
+        .Where(r => r.Ingredients.All(i => inputIngredients.Contains(i.Name.ToLower())))
+        .ToList();
+    }
+}

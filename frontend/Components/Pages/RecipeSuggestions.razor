@@ -1,0 +1,20 @@
+@page "/recipes"
+@inject AppDbContext Db
+
+<h3>Retseptid</h3>
+
+<ul>
+    @foreach (var recipe in recipes)
+    {
+        <li>@recipe.Name</li>
+    }
+</ul>
+
+@code {
+    private List<Recipe> recipes = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        recipes = await Db.Recipes.ToListAsync();
+    }
+}

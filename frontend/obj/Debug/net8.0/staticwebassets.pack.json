@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets/favicon.png"
     },
     {
+      "Id": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/site.css",
+      "PackagePath": "staticwebassets/site.css"
+    },
+    {
       "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.frontend.props",
       "PackagePath": "build\\frontend.props"
     },

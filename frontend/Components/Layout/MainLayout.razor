@@ -1,20 +1,35 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+<div class="main-layout">
+    <NavMenu />
+
+    <div class="content">
+        @Body
     </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+    <footer>
+        <p>&copy; 2023 Fridge Tracker</p>
+    </footer>
 </div>
+
+<style>
+    .main-layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .content {
+        flex: 1;
+        padding: 20px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #f8f9fa;
+    }
+</style>
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.

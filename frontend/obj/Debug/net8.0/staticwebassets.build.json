@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "tgNNJcnvR+D3vIkumYRPHrcSUC3BrB5de70mpt9pEi0=",
+  "Hash": "fJwsuVYGGmT0+8IvtcFR81iZnMwy1dOz0w1bERwqBzI=",
   "Source": "frontend",
   "BasePath": "_content/frontend",
   "Mode": "Default",
@@ -129,6 +129,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/favicon.png"
+    },
+    {
+      "Identity": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/site.css",
+      "SourceId": "frontend",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/hen/Dokumendid/Projektid/retseptiraamat/frontend/wwwroot/",
+      "BasePath": "_content/frontend",
+      "RelativePath": "site.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/site.css"
     }
   ]
 }
