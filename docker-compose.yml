@@ -8,14 +8,11 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db;Database=FridgeDB;User=sa;Password=YourStrongPassword123!;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=vhk-12r.database.windows.net;Database=HelloWorld;User=HelloWorld;Password=${DB_PASSWORD};TrustServerCertificate=True;
     ports:
       - "5000:80"
     volumes:
       - ./backend:/app
-    depends_on:
-      db:
-        condition: service_healthy
 
   # Frontend - Development
   frontend-dev:
@@ -39,7 +36,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Server=db;Database=FridgeDB;User=sa;Password=YourStrongPassword123!;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=vhk-12r.database.windows.net;Database=HelloWorld;User=HelloWorld;Password=${DB_PASSWORD};TrustServerCertificate=True;
     ports:
       - "8080:80"
     depends_on:

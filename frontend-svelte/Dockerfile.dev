@@ -1,0 +1,16 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json ./
+COPY package-lock.json* ./
+
+# Install dependencies with fallback options
+RUN npm ci || npm install
+
+# Copy the rest of the app
+COPY . .
+
+# Start development server
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
