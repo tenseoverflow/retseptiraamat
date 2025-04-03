@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  # Backend API - Development
+  backend-dev:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=FridgeDB;User=sa;Password=YourStrongPassword123!;TrustServerCertificate=True;
+    ports:
+      - "5000:80"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Frontend - Development
+  frontend-dev:
+    build:
+      context: ./frontend-svelte
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend-svelte:/app
+      - /app/node_modules
+    environment:
+      - PUBLIC_API_URL=http://localhost:5000
+    depends_on:
+      - backend-dev
+
+  # Backend API - Production
+  backend-prod:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=db;Database=FridgeDB;User=sa;Password=YourStrongPassword123!;TrustServerCertificate=True;
+    ports:
+      - "8080:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    profiles: ["prod"]
+
+  # Frontend - Production
+  frontend-prod:
+    build:
+      context: ./frontend-svelte
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - API_URL=http://backend-prod
+    depends_on:
+      - backend-prod
+    restart: always
+    profiles: ["prod"]
