@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using backend.Model;
 using Microsoft.AspNetCore.Mvc;
+using backend.Services;
+using backend.Interfaces;
 
 namespace backend.Controller {
     [Route("api/[controller]")]
@@ -17,21 +19,21 @@ namespace backend.Controller {
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<FridgeItem>> GetFridgeItems()
+        public async Task<ActionResult<IEnumerable<FridgeItem>>> GetFridgeItems()
         {
-            var fridgeItems = _fridgeService.GetFridgeItems();
+            var fridgeItems = await _fridgeService.GetAllAsync();
             return Ok(fridgeItems);
         }
 
         [HttpPost]
-        public ActionResult AddFridgeItem([FromBody] FridgeItem fridgeItem)
+        public async Task<ActionResult> AddFridgeItem([FromBody] FridgeItem fridgeItem)
         {
             if (fridgeItem == null)
             {
                 return BadRequest("Invalid fridge item.");
             }
 
-            _fridgeService.AddFridgeItem(fridgeItem);
+            await _fridgeService.CreateAsync(fridgeItem);
             return CreatedAtAction(nameof(GetFridgeItems), new { id = fridgeItem.Id }, fridgeItem);
         }
     }

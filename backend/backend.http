@@ -1,6 +1,45 @@
-@backend_HostAddress = http://localhost:5036
+@baseUrl = https://${CODESPACE_NAME}-5000.app.github.dev
 
-GET {{backend_HostAddress}}/weatherforecast/
+### Test Recipe Endpoints
+
+# Get all recipes
+GET {{baseUrl}}/api/Recipe
 Accept: application/json
 
-###
+### Get specific recipe by id
+GET {{baseUrl}}/api/Recipe/1
+Accept: application/json
+
+### Create new recipe
+POST {{baseUrl}}/api/Recipe
+Content-Type: application/json
+
+{
+    "title": "Pasta Carbonara",
+    "description": "Classic Italian pasta dish",
+    "ingredients": {
+        "spaghetti": 500,
+        "eggs": 3,
+        "pecorino": 100,
+        "guanciale": 200
+    }
+}
+
+### Test Fridge Endpoints
+
+# Get all fridge items
+GET {{baseUrl}}/api/Fridge
+Accept: application/json
+
+### Add items to fridge
+POST {{baseUrl}}/api/Fridge
+Content-Type: application/json
+
+{
+    "ingredients": {
+        "spaghetti": 1000,
+        "eggs": 12,
+        "pecorino": 250,
+        "guanciale": 300
+    }
+}

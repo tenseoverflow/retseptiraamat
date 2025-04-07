@@ -9,9 +9,15 @@ RUN dotnet restore
 # Copy everything else
 COPY . ./
 
-# Add EF Core tools
+# Install dotnet-ef tools
 RUN dotnet tool install --global dotnet-ef
-ENV PATH="${PATH}:/root/.dotnet/tools"
 
-# Run migrations and start the app with hot reload
-CMD /bin/bash -c "dotnet ef database update && dotnet watch run --urls=http://+:80"
+# Ensure the app builds
+RUN dotnet build
+
+EXPOSE 80
+
+ENV ASPNETCORE_URLS=http://+:80
+ENV ASPNETCORE_ENVIRONMENT=Development
+
+ENTRYPOINT ["dotnet", "watch", "run", "--urls", "http://+:80"]

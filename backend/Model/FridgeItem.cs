@@ -6,7 +6,9 @@ namespace backend.Model
     {
         [Key]
         public int Id { get; set; }
-        public Dictionary<string, double> Ingredients { get; set; }
+        [Required]
+        public Dictionary<string, double> Ingredients { get; set; } = new ();
+        
         public DateTime LastUpdated { get; set; }
     }
 }

@@ -8,13 +8,13 @@ namespace backend.Model
         public int Id { get; set; }
         
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         
         [Required]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         
         [Required]
-        public Dictionary<string, double> Ingredients { get; set; }
+        public Dictionary<string, double> Ingredients { get; set; } = new ();
         
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
