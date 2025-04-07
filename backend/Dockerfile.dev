@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+
+WORKDIR /app
+
+# Copy csproj and restore as distinct layers
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy everything else
+COPY . ./
+
+# Install dotnet-ef tools
+RUN dotnet tool install --global dotnet-ef
+
+# Ensure the app builds
+RUN dotnet build
+
+EXPOSE 80
+
+ENV ASPNETCORE_URLS=http://+:80
+ENV ASPNETCORE_ENVIRONMENT=Development
+
+ENTRYPOINT ["dotnet", "watch", "run", "--urls", "http://+:80"]

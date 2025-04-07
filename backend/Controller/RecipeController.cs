@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using backend.Model;
 using Microsoft.AspNetCore.Mvc;
+using backend.Interfaces;
 
 namespace backend.Controller
 {
@@ -17,16 +19,16 @@ namespace backend.Controller
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Recipe>> GetRecipes()
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipes()
         {
-            var recipes = _recipeService.GetRecipes();
+            var recipes = await _recipeService.GetAllAsync();
             return Ok(recipes);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Recipe> GetRecipe(int id)
+        public async Task<ActionResult<Recipe>> GetRecipe(int id)
         {
-            var recipe = _recipeService.GetRecipe(id);
+            var recipe = await _recipeService.GetByIdAsync(id);
             if (recipe == null)
             {
                 return NotFound();
@@ -35,7 +37,7 @@ namespace backend.Controller
         }
 
         [HttpPost]
-        public ActionResult CreateRecipe([FromBody] Recipe recipe)
+        public async Task<ActionResult> CreateRecipe([FromBody] Recipe recipe)
         {
             if (recipe == null)
             {
@@ -43,7 +45,7 @@ namespace backend.Controller
             }
 
             recipe.CreatedAt = DateTime.UtcNow;
-            _recipeService.AddRecipe(recipe);
+            await _recipeService.CreateAsync(recipe);
             return CreatedAtAction(nameof(GetRecipe), new { id = recipe.Id }, recipe);
         }
     }

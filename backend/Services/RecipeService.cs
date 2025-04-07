@@ -1,6 +1,9 @@
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using backend.Data;
 using backend.Model;
 using Microsoft.EntityFrameworkCore;
+using backend.Interfaces;
 
 namespace backend.Services
 {
@@ -13,20 +16,37 @@ namespace backend.Services
             _context = context;
         }
 
-        public IEnumerable<Recipe> GetRecipes()
+        public async Task<IEnumerable<Recipe>> GetAllAsync()
         {
-            return _context.Recipes.ToList();
+            return await _context.Recipes.ToListAsync();
         }
 
-        public Recipe GetRecipe(int id)
+        public async Task<Recipe?> GetByIdAsync(int id)
         {
-            return _context.Recipes.Find(id);
+            return await _context.Recipes.FindAsync(id);
         }
 
-        public void AddRecipe(Recipe recipe)
+        public async Task<Recipe> CreateAsync(Recipe recipe)
         {
             _context.Recipes.Add(recipe);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return recipe;
+        }
+
+        public async Task UpdateAsync(Recipe recipe)
+        {
+            _context.Entry(recipe).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var recipe = await _context.Recipes.FindAsync(id);
+            if (recipe != null)
+            {
+                _context.Recipes.Remove(recipe);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
