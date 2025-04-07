@@ -1,6 +1,0 @@
-{
-    "dotnet.defaultSolution": "frontend.sln",
-    "dataworkspace.excludedProjects": [
-        "vhk-12r.database.windows.net/vhk-12r.database.windows.net.sqlproj"
-    ]
-}
