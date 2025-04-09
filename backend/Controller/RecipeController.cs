@@ -48,5 +48,24 @@ namespace backend.Controller
             await _recipeService.CreateAsync(recipe);
             return CreatedAtAction(nameof(GetRecipe), new { id = recipe.Id }, recipe);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateRecipe(int id, [FromBody] Recipe recipe)
+        {
+            if (id != recipe.Id)
+            {
+                return BadRequest("Recipe ID mismatch.");
+            }
+
+            var existingRecipe = await _recipeService.GetByIdAsync(id);
+            if (existingRecipe == null)
+            {
+                return NotFound("Recipe not found.");
+            }
+
+            recipe.UpdatedAt = DateTime.UtcNow;
+            await _recipeService.UpdateAsync(recipe);
+            return NoContent();
+        }
     }
 }

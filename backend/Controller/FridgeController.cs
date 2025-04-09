@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using backend.Services;
 using backend.Interfaces;
 
-namespace backend.Controller {
+namespace backend.Controller
+{
     [Route("api/[controller]")]
     [ApiController]
-    
+
     public class FridgeController : ControllerBase
     {
         private readonly IFridgeService _fridgeService;
@@ -35,6 +36,24 @@ namespace backend.Controller {
 
             await _fridgeService.CreateAsync(fridgeItem);
             return CreatedAtAction(nameof(GetFridgeItems), new { id = fridgeItem.Id }, fridgeItem);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateFridgeItem(int id, [FromBody] FridgeItem fridgeItem)
+        {
+            if (id != fridgeItem.Id)
+            {
+                return BadRequest("Fridge item ID mismatch.");
+            }
+
+            var existingItem = await _fridgeService.GetByIdAsync(id);
+            if (existingItem == null)
+            {
+                return NotFound("Fridge item not found.");
+            }
+
+            await _fridgeService.UpdateAsync(fridgeItem);
+            return NoContent();
         }
     }
 }

@@ -26,10 +26,10 @@ namespace backend.Data
                 );
 
             modelBuilder.Entity<FridgeItem>()
-                .Property(e => e.Ingredients)
+                .Property(e => e.Ingredient)
                 .HasConversion(
-                    v => JsonSerializer.Serialize(v, typeof(Dictionary<string, double>), _jsonOptions),
-                    v => JsonSerializer.Deserialize<Dictionary<string, double>>(v, _jsonOptions) ?? new Dictionary<string, double>()
+                    v => v,
+                    v => v ?? string.Empty
                 );
         }
     }

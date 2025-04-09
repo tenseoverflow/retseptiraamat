@@ -7,8 +7,11 @@ namespace backend.Model
         [Key]
         public int Id { get; set; }
         [Required]
-        public Dictionary<string, double> Ingredients { get; set; } = new ();
-        
+        public string Ingredient { get; set; }
+        [Required]
+        public int Amount { get; set; }
+
+        [Required]
         public DateTime LastUpdated { get; set; }
     }
 }
