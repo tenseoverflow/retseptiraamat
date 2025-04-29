@@ -4,6 +4,6 @@
 
 @theme {
     --color-primary: #C1D2B2;
-    --text-primary: #637381;
-    --text-secondary: #637381;
+    --text: #637381;
+    --color-secondary: #637381;
 }

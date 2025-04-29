@@ -61,7 +61,7 @@
 			// Filter recipes that can be made with the current fridge inventory
 			availableRecipes = recipes.filter((recipe) => canMakeRecipe(recipe, fridgeItems));
 		} catch (e) {
-			error = 'Failed to load data';
+			error = 'Andmete laadimine ebaõnnestus';
 		} finally {
 			loading = false;
 		}
@@ -92,7 +92,7 @@
 						<div class="flex flex-col space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0">
 							<a
 								href="/fridge"
-								class="rounded-md bg-green-600 px-4 py-2 text-center text-white hover:bg-green-700"
+								class="bg-primary text-secondary rounded-md px-4 py-2 text-center font-semibold hover:text-gray-700 hover:transition"
 							>
 								Lisa koostisosi külmkappi
 							</a>
@@ -108,32 +108,34 @@
 					<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 						{#each availableRecipes as recipe}
 							<div
-								class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
+								class="flex h-full flex-col overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
 							>
-								<div class="p-6">
-									<h3 class="mb-2 text-xl font-semibold">{recipe.title}</h3>
-									<p class="mb-4 line-clamp-3 text-gray-600">
-										{recipe.description.length > 100
-											? recipe.description.slice(0, 100) + '...'
-											: recipe.description}
-									</p>
+								<div class="flex flex-grow flex-col p-6">
+									<div class="flex-grow">
+										<h3 class="mb-2 text-xl font-semibold">{recipe.title}</h3>
+										<p class="mb-4 line-clamp-3 whitespace-pre-line text-gray-600">
+											{recipe.description.length > 100
+												? recipe.description.slice(0, 100) + '...'
+												: recipe.description}
+										</p>
 
-									<h4 class="mb-2 font-medium">Koostisosad:</h4>
-									<ul class="mb-4 list-inside list-disc">
-										{#each Object.entries(recipe.ingredients).slice(0, 3) as [ingredient, amount]}
-											<li>{ingredient}: {amount}</li>
-										{/each}
-										{#if Object.keys(recipe.ingredients).length > 3}
-											<li class="text-gray-500">
-												+{Object.keys(recipe.ingredients).length - 3} veel...
-											</li>
-										{/if}
-									</ul>
+										<h4 class="mb-2 font-medium">Koostisosad:</h4>
+										<ul class="mb-4 list-inside list-disc">
+											{#each Object.entries(recipe.ingredients).slice(0, 3) as [ingredient, amount]}
+												<li>{ingredient}: {amount}</li>
+											{/each}
+											{#if Object.keys(recipe.ingredients).length > 3}
+												<li class="text-gray-500">
+													+{Object.keys(recipe.ingredients).length - 3} veel...
+												</li>
+											{/if}
+										</ul>
+									</div>
 
-									<div class="flex justify-end">
+									<div class="mt-auto flex justify-end pt-4">
 										<a
 											href={`/recipes/${recipe.id}`}
-											class="inline-block rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+											class="bg-primary text-secondary inline-block rounded-md px-4 py-2 font-semibold hover:text-gray-700 hover:transition"
 										>
 											Vaata retsepti
 										</a>

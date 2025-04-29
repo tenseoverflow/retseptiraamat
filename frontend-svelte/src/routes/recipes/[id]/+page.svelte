@@ -20,11 +20,11 @@
 		try {
 			const response = await fetch(`http://localhost:5036/api/Recipe/${id}`);
 			if (!response.ok) {
-				throw new Error(`Recipe not found (${response.status})`);
+				throw new Error(`Retsepti ei leitud (${response.status})`);
 			}
 			recipe = await response.json();
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Failed to load recipe';
+			error = e instanceof Error ? e.message : 'Retsepti laadimine ebaõnnestus';
 		} finally {
 			loading = false;
 		}
@@ -48,7 +48,7 @@
 					d="M10 19l-7-7m0 0l7-7m-7 7h18"
 				/>
 			</svg>
-			Back to Recipes
+			Tagasi retseptide juurde
 		</a>
 	</div>
 
@@ -60,7 +60,7 @@
 
 	{#if loading}
 		<div class="flex h-64 items-center justify-center">
-			<p class="text-lg">Loading recipe details...</p>
+			<p class="text-lg">Laadin retsepti...</p>
 		</div>
 	{:else if recipe}
 		<div class="overflow-hidden rounded-lg bg-white shadow-lg">
@@ -68,11 +68,11 @@
 				<h1 class="mb-4 text-3xl font-bold">{recipe.title}</h1>
 
 				<div class="mb-8 text-gray-600">
-					<p class="text-lg">{recipe.description}</p>
+					<p class="whitespace-pre-line text-lg">{recipe.description}</p>
 				</div>
 
 				<div class="mb-6">
-					<h2 class="mb-3 text-xl font-semibold">Ingredients</h2>
+					<h2 class="mb-3 text-xl font-semibold">Koostisosad</h2>
 					<div class="rounded-md bg-gray-50 p-4">
 						<ul class="list-inside list-disc space-y-2">
 							{#each Object.entries(recipe.ingredients) as [ingredient, amount]}
@@ -83,36 +83,11 @@
 				</div>
 
 				<div class="mt-6 border-t border-gray-200 pt-4">
-					<div class="flex items-center justify-between">
-						<div class="text-sm text-gray-500">
-							<p>Created: {new Date(recipe.createdAt).toLocaleDateString()}</p>
-							{#if recipe.updatedAt}
-								<p>Updated: {new Date(recipe.updatedAt).toLocaleDateString()}</p>
-							{/if}
-						</div>
-
-						<div class="flex space-x-3">
-							<a
-								href={`/recipes/edit/${recipe.id}`}
-								class="bg-primary hover:bg-primary-dark inline-flex items-center rounded px-4 py-2 text-gray-800"
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									class="mr-1 h-4 w-4"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-									/>
-								</svg>
-								Edit Recipe
-							</a>
-						</div>
+					<div class="text-sm text-gray-500">
+						<p>Loodud: {new Date(recipe.createdAt).toLocaleDateString()}</p>
+						{#if recipe.updatedAt}
+							<p>Uuendatud: {new Date(recipe.updatedAt).toLocaleDateString()}</p>
+						{/if}
 					</div>
 				</div>
 			</div>

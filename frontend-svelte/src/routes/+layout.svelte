@@ -1,26 +1,23 @@
 <script lang="ts">
 	import '../app.css';
 	import { page } from '$app/stores';
+	import { writable } from 'svelte/store';
 
 	let { children } = $props();
-	let isMenuOpen = false;
-
-	function toggleMenu() {
-		isMenuOpen = !isMenuOpen;
-	}
+	const isMenuOpen = writable(false);
 </script>
 
 <div class="flex min-h-screen flex-col">
-	<nav class=" text-gray-800">
+	<nav class="text-secondary">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-			<div class="flex h-24 justify-between">
-				<!-- Logo/Brand -->
+			<div class="flex h-24 items-center justify-between">
+				<!-- Logo/Brand for desktop -->
 				<div class="hidden items-center space-x-4 md:flex">
 					<a
 						href="/"
 						class="hover:bg-primary-dark rounded-md px-3 py-2 text-sm font-medium {$page.url
 							.pathname === '/'
-							? 'text-secondary'
+							? 'text-gray-700'
 							: ''}"
 					>
 						Kodu
@@ -30,7 +27,7 @@
 						class="hover:bg-primary-dark rounded-md px-3 py-2 text-sm font-medium {$page.url.pathname.startsWith(
 							'/recipes'
 						)
-							? 'text-secondary'
+							? 'text-gray-700'
 							: ''}"
 					>
 						Retseptid
@@ -39,24 +36,34 @@
 						href="/fridge"
 						class="hover:bg-primary-dark rounded-md px-3 py-2 text-sm font-medium {$page.url
 							.pathname === '/fridge'
-							? 'text-secondary'
+							? 'text-gray-700'
 							: ''}"
 					>
 						Külmkapi sisu
 					</a>
 				</div>
 
+				<!-- Logo/Brand for mobile -->
+				<div class="md:hidden">
+					<a href="/" class="text-xl font-bold">Retseptiraamat</a>
+				</div>
+
 				<!-- Desktop Navigation -->
 				<div class="hidden items-center space-x-4 md:flex">
 					<a
 						href="/recipes/add"
-						class="hover:bg-primary-dark flex flex-shrink-0 items-center rounded-md px-3 py-2"
+						class="flex flex-shrink-0 items-center rounded-md px-3 py-2 hover:bg-gray-200 hover:text-gray-700 hover:transition {$page
+							.url.pathname === '/recipes/add'
+							? 'text-gray-700'
+							: ''}"
 					>
 						<span class="font-bold">Lisa retsept</span>
 					</a>
 					<a
 						href="/fridge"
-						class="hover:bg-primary-dark bg-primary flex flex-shrink-0 items-center rounded-md px-3 py-2"
+						class="{$page.url.pathname === '/fridge'
+							? 'text-gray-700'
+							: ''} bg-primary flex flex-shrink-0 items-center rounded-md px-3 py-2 hover:text-gray-700 hover:transition"
 					>
 						<span class="font-bold">Lisa külmkappi sisu</span>
 					</a>
@@ -65,14 +72,14 @@
 				<!-- Mobile menu button -->
 				<div class="flex items-center md:hidden">
 					<button
-						on:click={toggleMenu}
 						type="button"
-						class="hover:bg-primary-dark inline-flex items-center justify-center rounded-md p-2"
-						aria-expanded="false"
+						class="hover:bg-primary-dark inline-flex cursor-pointer items-center justify-center rounded-md p-2"
+						aria-expanded={$isMenuOpen}
+						on:click={() => isMenuOpen.update((value) => !value)}
 					>
-						<span class="sr-only">Open main menu</span>
+						<span class="sr-only">Ava menüü</span>
 						<svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-							{#if isMenuOpen}
+							{#if $isMenuOpen}
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -94,7 +101,7 @@
 		</div>
 
 		<!-- Mobile Navigation Menu -->
-		{#if isMenuOpen}
+		{#if $isMenuOpen}
 			<div class="md:hidden">
 				<div class="space-y-1 px-2 pb-3 pt-2">
 					<a
@@ -103,8 +110,9 @@
 							.pathname === '/'
 							? 'text-primary-dark'
 							: ''}"
+						on:click={() => isMenuOpen.set(false)}
 					>
-						Home
+						Kodu
 					</a>
 					<a
 						href="/recipes"
@@ -113,8 +121,9 @@
 						)
 							? 'text-primary-dark'
 							: ''}"
+						on:click={() => isMenuOpen.set(false)}
 					>
-						Recipes
+						Retseptid
 					</a>
 					<a
 						href="/fridge"
@@ -122,17 +131,19 @@
 							.pathname === '/fridge'
 							? 'text-primary-dark'
 							: ''}"
+						on:click={() => isMenuOpen.set(false)}
 					>
-						My Fridge
+						Külmkapp
 					</a>
 					<a
-						href="/about"
+						href="/recipes/add"
 						class="hover:bg-primary-dark block rounded-md px-3 py-2 text-base font-medium {$page.url
-							.pathname === '/about'
+							.pathname === '/recipes/add'
 							? 'bg-primary-dark'
 							: ''}"
+						on:click={() => isMenuOpen.set(false)}
 					>
-						About
+						Lisa retsept
 					</a>
 				</div>
 			</div>

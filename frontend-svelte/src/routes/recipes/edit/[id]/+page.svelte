@@ -88,6 +88,39 @@
 			error = 'Failed to update recipe';
 		}
 	}
+
+	async function deleteRecipe() {
+		if (confirm('Are you sure you want to delete this recipe?')) {
+			try {
+				const response = await fetch(`http://localhost:5036/api/Recipe/${recipeId}`, {
+					method: 'DELETE'
+				});
+
+				if (response.ok) {
+					success = 'Recipe deleted successfully!';
+
+					// Navigate to recipes list after a short delay
+					setTimeout(() => {
+						goto('/recipes');
+					}, 2000);
+				} else {
+					error = 'Failed to delete recipe';
+
+					// Clear error message after 3 seconds
+					setTimeout(() => {
+						error = '';
+					}, 3000);
+				}
+			} catch (e) {
+				error = 'Failed to delete recipe';
+
+				// Clear error message after 3 seconds
+				setTimeout(() => {
+					error = '';
+				}, 3000);
+			}
+		}
+	}
 </script>
 
 <div class="container mx-auto p-4">
@@ -117,7 +150,7 @@
 					id="title"
 					type="text"
 					bind:value={title}
-					class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+					class="focus:ring-primary focus:border-primary mt-1 block w-full rounded-md border-gray-300 shadow-sm"
 					required
 				/>
 			</div>
@@ -128,7 +161,7 @@
 					id="description"
 					bind:value={description}
 					rows="4"
-					class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+					class="focus:ring-primary focus:border-primary mt-1 block w-full rounded-md border-gray-300 shadow-sm"
 					required
 				></textarea>
 			</div>
@@ -139,7 +172,7 @@
 					<button
 						type="button"
 						on:click={addIngredient}
-						class="rounded-md bg-green-100 px-3 py-1 text-sm text-green-800 hover:bg-green-200"
+						class="rounded-md border border-gray-300 px-3 py-1 text-sm shadow-sm hover:cursor-pointer hover:bg-gray-50 hover:transition"
 					>
 						+ Add Ingredient
 					</button>
@@ -153,7 +186,7 @@
 								<input
 									type="text"
 									bind:value={ingredient.name}
-									class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+									class="focus:border-primary focus:ring-primary mt-1 block w-full rounded-md border-gray-300 shadow-sm"
 									required
 								/>
 							</div>
@@ -162,14 +195,14 @@
 								<input
 									type="number"
 									bind:value={ingredient.amount}
-									class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+									class="focus:border-primary focus:ring-primary mt-1 block w-full rounded-md border-gray-300 shadow-sm"
 									required
 								/>
 							</div>
 							<button
 								type="button"
 								on:click={() => removeIngredient(i)}
-								class="rounded-md bg-red-100 px-3 py-2 text-sm text-red-800 hover:bg-red-200"
+								class="rounded-md bg-red-100 px-3 py-2 text-sm text-red-800 hover:cursor-pointer hover:bg-red-200 hover:transition"
 							>
 								Remove
 							</button>
@@ -178,18 +211,25 @@
 				</div>
 			</div>
 
-			<div class="flex justify-end">
+			<div class="flex justify-end gap-x-2">
+				<button
+					on:click={deleteRecipe}
+					class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:cursor-pointer hover:bg-red-800 hover:transition"
+					title="Delete recipe"
+				>
+					Kustuta
+				</button>
 				<a
 					href="/recipes"
-					class="mr-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+					class="text-secondary rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-50 hover:text-gray-700 hover:transition"
 				>
-					Cancel
+					Tühista
 				</a>
 				<button
 					type="submit"
-					class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700"
+					class="bg-primary text-secondary rounded-md px-4 py-2 text-sm font-medium font-semibold shadow-sm hover:cursor-pointer hover:text-gray-700 hover:transition"
 				>
-					Update Recipe
+					Uuenda
 				</button>
 			</div>
 		</form>
