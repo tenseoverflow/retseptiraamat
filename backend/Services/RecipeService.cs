@@ -1,9 +1,11 @@
+using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using backend.Data;
 using backend.Model;
 using Microsoft.EntityFrameworkCore;
 using backend.Interfaces;
+using System.Linq;
 
 namespace backend.Services
 {
@@ -35,7 +37,21 @@ namespace backend.Services
 
         public async Task UpdateAsync(Recipe recipe)
         {
-            _context.Entry(recipe).State = EntityState.Modified;
+            // Get the existing recipe from the database
+            var existingRecipe = await _context.Recipes.FindAsync(recipe.Id);
+            
+            if (existingRecipe == null)
+            {
+                throw new KeyNotFoundException($"Recipe with ID {recipe.Id} not found");
+            }
+            
+            // Update the properties of the existing entity
+            existingRecipe.Title = recipe.Title;
+            existingRecipe.Description = recipe.Description;
+            existingRecipe.Ingredients = recipe.Ingredients;
+            existingRecipe.UpdatedAt = DateTime.UtcNow;
+            
+            // Save changes
             await _context.SaveChangesAsync();
         }
 

@@ -55,5 +55,18 @@ namespace backend.Controller
             await _fridgeService.UpdateAsync(fridgeItem);
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteFridgeItem(int id)
+        {
+            var fridgeItem = await _fridgeService.GetByIdAsync(id);
+            if (fridgeItem == null)
+            {
+                return NotFound("Fridge item not found.");
+            }
+
+            await _fridgeService.DeleteAsync(id);
+            return NoContent();
+        }
     }
 }

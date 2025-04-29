@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import { page } from '$app/stores';
 
 	let { children } = $props();
 	let isMenuOpen = false;
@@ -10,28 +11,55 @@
 </script>
 
 <div class="flex min-h-screen flex-col">
-	<nav class="bg-green-700 text-white shadow-lg">
+	<nav class=" text-gray-800">
 		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-			<div class="flex h-16 justify-between">
+			<div class="flex h-24 justify-between">
 				<!-- Logo/Brand -->
-				<div class="flex items-center">
-					<a href="/" class="flex flex-shrink-0 items-center">
-						<span class="text-xl font-bold">Recipe Book</span>
+				<div class="hidden items-center space-x-4 md:flex">
+					<a
+						href="/"
+						class="hover:bg-primary-dark rounded-md px-3 py-2 text-sm font-medium {$page.url
+							.pathname === '/'
+							? 'text-secondary'
+							: ''}"
+					>
+						Kodu
+					</a>
+					<a
+						href="/recipes"
+						class="hover:bg-primary-dark rounded-md px-3 py-2 text-sm font-medium {$page.url.pathname.startsWith(
+							'/recipes'
+						)
+							? 'text-secondary'
+							: ''}"
+					>
+						Retseptid
+					</a>
+					<a
+						href="/fridge"
+						class="hover:bg-primary-dark rounded-md px-3 py-2 text-sm font-medium {$page.url
+							.pathname === '/fridge'
+							? 'text-secondary'
+							: ''}"
+					>
+						Külmkapi sisu
 					</a>
 				</div>
 
 				<!-- Desktop Navigation -->
 				<div class="hidden items-center space-x-4 md:flex">
-					<a href="/" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-green-600">Home</a>
-					<a href="/recipes" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-green-600"
-						>Recipes</a
+					<a
+						href="/recipes/add"
+						class="hover:bg-primary-dark flex flex-shrink-0 items-center rounded-md px-3 py-2"
 					>
-					<a href="/fridge" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-green-600"
-						>My Fridge</a
+						<span class="font-bold">Lisa retsept</span>
+					</a>
+					<a
+						href="/fridge"
+						class="hover:bg-primary-dark bg-primary flex flex-shrink-0 items-center rounded-md px-3 py-2"
 					>
-					<a href="/about" class="rounded-md px-3 py-2 text-sm font-medium hover:bg-green-600"
-						>About</a
-					>
+						<span class="font-bold">Lisa külmkappi sisu</span>
+					</a>
 				</div>
 
 				<!-- Mobile menu button -->
@@ -39,7 +67,7 @@
 					<button
 						on:click={toggleMenu}
 						type="button"
-						class="inline-flex items-center justify-center rounded-md p-2 hover:bg-green-600"
+						class="hover:bg-primary-dark inline-flex items-center justify-center rounded-md p-2"
 						aria-expanded="false"
 					>
 						<span class="sr-only">Open main menu</span>
@@ -69,37 +97,51 @@
 		{#if isMenuOpen}
 			<div class="md:hidden">
 				<div class="space-y-1 px-2 pb-3 pt-2">
-					<a href="/" class="block rounded-md px-3 py-2 text-base font-medium hover:bg-green-600"
-						>Home</a
+					<a
+						href="/"
+						class="hover:bg-primary-dark block rounded-md px-3 py-2 text-base font-medium {$page.url
+							.pathname === '/'
+							? 'text-primary-dark'
+							: ''}"
 					>
+						Home
+					</a>
 					<a
 						href="/recipes"
-						class="block rounded-md px-3 py-2 text-base font-medium hover:bg-green-600">Recipes</a
+						class="hover:bg-primary-dark block rounded-md px-3 py-2 text-base font-medium {$page.url.pathname.startsWith(
+							'/recipes'
+						)
+							? 'text-primary-dark'
+							: ''}"
 					>
+						Recipes
+					</a>
 					<a
 						href="/fridge"
-						class="block rounded-md px-3 py-2 text-base font-medium hover:bg-green-600">My Fridge</a
+						class="hover:bg-primary-dark block rounded-md px-3 py-2 text-base font-medium {$page.url
+							.pathname === '/fridge'
+							? 'text-primary-dark'
+							: ''}"
 					>
+						My Fridge
+					</a>
 					<a
 						href="/about"
-						class="block rounded-md px-3 py-2 text-base font-medium hover:bg-green-600">About</a
+						class="hover:bg-primary-dark block rounded-md px-3 py-2 text-base font-medium {$page.url
+							.pathname === '/about'
+							? 'bg-primary-dark'
+							: ''}"
 					>
+						About
+					</a>
 				</div>
 			</div>
 		{/if}
 	</nav>
 
 	<main class="flex-grow">
-		<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<div class="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
 			{@render children()}
 		</div>
 	</main>
-
-	<footer class="bg-gray-100 py-4">
-		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-			<p class="text-center text-sm text-gray-500">
-				© {new Date().getFullYear()} Recipe Book. All rights reserved.
-			</p>
-		</div>
-	</footer>
 </div>

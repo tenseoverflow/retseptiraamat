@@ -67,5 +67,18 @@ namespace backend.Controller
             await _recipeService.UpdateAsync(recipe);
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteRecipe(int id)
+        {
+            var recipe = await _recipeService.GetByIdAsync(id);
+            if (recipe == null)
+            {
+                return NotFound("Recipe not found.");
+            }
+
+            await _recipeService.DeleteAsync(id);
+            return NoContent();
+        }
     }
 }

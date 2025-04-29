@@ -11,5 +11,5 @@ namespace backend.Interfaces
         Task<Recipe> CreateAsync(Recipe recipe);
         Task UpdateAsync(Recipe recipe);
         Task DeleteAsync(int id);
-    }
+            }
 }
