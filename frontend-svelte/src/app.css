@@ -7,3 +7,7 @@
     --text: #637381;
     --color-secondary: #637381;
 }
+
+html, body {
+  font-family: 'Inter', sans-serif;
+}
