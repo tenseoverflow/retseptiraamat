@@ -52,7 +52,7 @@
 			// Add recipe via API
 			await createRecipe(recipeData);
 
-			showSuccess('Retsept lisatud edukalt!');
+			showSuccess('Retsept lisatud');
 
 			// Redirect to recipes list after a short delay
 			setTimeout(() => {

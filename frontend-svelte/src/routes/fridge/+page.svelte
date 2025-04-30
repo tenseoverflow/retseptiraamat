@@ -38,7 +38,7 @@
 			const addedItem = await createFridgeItem(itemToAdd);
 			fridgeItems = [...fridgeItems, addedItem];
 			newItem = { ingredient: '', amount: 0 };
-			showSuccess('Koostisosa lisatud edukalt!');
+			showSuccess('Koostisosa lisatud');
 		} catch (e) {
 			// Check if error contains a duplicate ingredient message
 			if (e instanceof Error && e.message.includes('already exists')) {
@@ -54,7 +54,7 @@
 			try {
 				await deleteFridgeItem(id);
 				fridgeItems = fridgeItems.filter((item) => item.id !== id);
-				showSuccess('Koostisosa kustutatud edukalt!');
+				showSuccess('Koostisosa kustutatud');
 			} catch (e) {
 				showError('Koostisosa kustutamine ebaõnnestus');
 			}
@@ -91,7 +91,7 @@
 			// Update the item in the local array
 			fridgeItems = fridgeItems.map((item) => (item.id === editingItem!.id ? updatedItem : item));
 
-			showSuccess('Kogus muudetud edukalt!');
+			showSuccess('Kogus muudetud');
 
 			// Reset editing state
 			editingItem = null;

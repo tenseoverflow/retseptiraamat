@@ -67,6 +67,7 @@
 
 			// Update recipe payload
 			const recipeData = {
+				id: recipeId, // Include the ID to match backend expectation
 				title,
 				description,
 				ingredients: ingredientsObject,
@@ -74,7 +75,7 @@
 			};
 
 			await updateRecipe(recipeId, recipeData);
-			showSuccess('Retsept uuendatud edukalt!');
+			showSuccess('Retsept uuendatud');
 
 			// Redirect to recipe view after a short delay
 			setTimeout(() => {
@@ -94,7 +95,7 @@
 					isDeleting = true;
 
 					await deleteRecipeAPI(recipeId);
-					showSuccess('Retsept kustutatud edukalt!');
+					showSuccess('Retsept kustutatud');
 
 					// Use a shorter timeout for navigation to avoid disconnected port issues
 					setTimeout(() => {
