@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { createRecipe } from '$lib/api';
 
 	interface Ingredient {
 		name: string;
@@ -39,26 +40,18 @@
 				ingredients: ingredientsObject
 			};
 
-			const response = await fetch('http://localhost:5036/api/Recipe', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(recipeData)
-			});
+			await createRecipe(recipeData);
+			success = 'Retsept lisatud edukalt!';
 
-			if (response.ok) {
-				success = 'Retsept lisatud edukalt!';
-				// Reset form
-				title = '';
-				description = '';
-				ingredients = [{ name: '', amount: 0 }];
+			// Reset form
+			title = '';
+			description = '';
+			ingredients = [{ name: '', amount: 0 }];
 
-				// Navigate to recipes list after 2 seconds
-				setTimeout(() => {
-					goto('/recipes');
-				}, 2000);
-			} else {
-				error = 'Retsepti lisamine ebaõnnestus';
-			}
+			// Navigate to recipes list after 2 seconds
+			setTimeout(() => {
+				goto('/recipes');
+			}, 2000);
 		} catch (e) {
 			error = 'Retsepti lisamine ebaõnnestus';
 		}

@@ -2,6 +2,11 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import {
+		getRecipe,
+		updateRecipe as updateRecipeAPI,
+		deleteRecipe as deleteRecipeAPI
+	} from '$lib/api';
 
 	interface Ingredient {
 		name: string;
@@ -14,27 +19,21 @@
 	let error = '';
 	let success = '';
 	let loading = true;
-	const recipeId = $page.params.id;
+	const recipeId = parseInt($page.params.id);
 
 	onMount(async () => {
 		try {
-			const response = await fetch(`http://localhost:5036/api/Recipe/${recipeId}`);
+			const recipe = await getRecipe(recipeId);
+			title = recipe.title;
+			description = recipe.description;
 
-			if (response.ok) {
-				const recipe = await response.json();
-				title = recipe.title;
-				description = recipe.description;
-
-				// Convert ingredients object to array format for editing
-				ingredients = Object.entries(recipe.ingredients).map(([name, amount]) => ({
-					name,
-					amount: amount as number
-				}));
-			} else {
-				error = 'Failed to load recipe';
-			}
+			// Convert ingredients object to array format for editing
+			ingredients = Object.entries(recipe.ingredients).map(([name, amount]) => ({
+				name,
+				amount: amount as number
+			}));
 		} catch (e) {
-			error = 'Failed to load recipe';
+			error = 'Retsepti laadimine ebaõnnestus';
 		} finally {
 			loading = false;
 		}
@@ -62,57 +61,36 @@
 			);
 
 			const recipeData = {
-				id: parseInt(recipeId),
+				id: recipeId,
 				title,
 				description,
 				ingredients: ingredientsObject
 			};
 
-			const response = await fetch(`http://localhost:5036/api/Recipe/${recipeId}`, {
-				method: 'PUT',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(recipeData)
-			});
+			await updateRecipeAPI(recipeId, recipeData);
+			success = 'Retsept uuendatud edukalt!';
 
-			if (response.ok) {
-				success = 'Recipe updated successfully!';
-
-				// Navigate to recipes list after 2 seconds
-				setTimeout(() => {
-					goto('/recipes');
-				}, 2000);
-			} else {
-				error = 'Failed to update recipe';
-			}
+			// Navigate to recipes list after 2 seconds
+			setTimeout(() => {
+				goto('/recipes');
+			}, 2000);
 		} catch (e) {
-			error = 'Failed to update recipe';
+			error = 'Retsepti uuendamine ebaõnnestus';
 		}
 	}
 
 	async function deleteRecipe() {
-		if (confirm('Are you sure you want to delete this recipe?')) {
+		if (confirm('Kas oled kindel, et soovid selle retsepti kustutada?')) {
 			try {
-				const response = await fetch(`http://localhost:5036/api/Recipe/${recipeId}`, {
-					method: 'DELETE'
-				});
+				await deleteRecipeAPI(recipeId);
+				success = 'Retsept kustutatud edukalt!';
 
-				if (response.ok) {
-					success = 'Recipe deleted successfully!';
-
-					// Navigate to recipes list after a short delay
-					setTimeout(() => {
-						goto('/recipes');
-					}, 2000);
-				} else {
-					error = 'Failed to delete recipe';
-
-					// Clear error message after 3 seconds
-					setTimeout(() => {
-						error = '';
-					}, 3000);
-				}
+				// Navigate to recipes list after a short delay
+				setTimeout(() => {
+					goto('/recipes');
+				}, 2000);
 			} catch (e) {
-				error = 'Failed to delete recipe';
+				error = 'Retsepti kustutamine ebaõnnestus';
 
 				// Clear error message after 3 seconds
 				setTimeout(() => {
@@ -124,7 +102,7 @@
 </script>
 
 <div class="container mx-auto p-4">
-	<h1 class="mb-6 text-2xl font-bold">Edit Recipe</h1>
+	<h1 class="mb-6 text-2xl font-bold">Muuda retsepti</h1>
 
 	{#if error}
 		<div class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
@@ -140,12 +118,12 @@
 
 	{#if loading}
 		<div class="flex justify-center">
-			<p class="text-gray-500">Loading recipe...</p>
+			<p class="text-gray-500">Laadin retsepti...</p>
 		</div>
 	{:else}
 		<form class="space-y-6" on:submit|preventDefault={updateRecipe}>
 			<div>
-				<label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+				<label for="title" class="block text-sm font-medium text-gray-700">Pealkiri</label>
 				<input
 					id="title"
 					type="text"
@@ -156,7 +134,7 @@
 			</div>
 
 			<div>
-				<label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+				<label for="description" class="block text-sm font-medium text-gray-700">Kirjeldus</label>
 				<textarea
 					id="description"
 					bind:value={description}
@@ -168,13 +146,13 @@
 
 			<div>
 				<div class="flex items-center justify-between">
-					<h3 class="text-lg font-medium">Ingredients</h3>
+					<h3 class="text-lg font-medium">Koostisosad</h3>
 					<button
 						type="button"
 						on:click={addIngredient}
 						class="rounded-md border border-gray-300 px-3 py-1 text-sm shadow-sm hover:cursor-pointer hover:bg-gray-50 hover:transition"
 					>
-						+ Add Ingredient
+						+ Lisa koostisosa
 					</button>
 				</div>
 
@@ -182,7 +160,7 @@
 					{#each ingredients as ingredient, i}
 						<div class="flex items-end gap-4">
 							<div class="flex-1">
-								<label class="block text-sm font-medium text-gray-700">Ingredient Name</label>
+								<label class="block text-sm font-medium text-gray-700">Nimetus</label>
 								<input
 									type="text"
 									bind:value={ingredient.name}
@@ -191,7 +169,7 @@
 								/>
 							</div>
 							<div class="w-32">
-								<label class="block text-sm font-medium text-gray-700">Amount</label>
+								<label class="block text-sm font-medium text-gray-700">Kogus</label>
 								<input
 									type="number"
 									bind:value={ingredient.amount}
@@ -204,7 +182,7 @@
 								on:click={() => removeIngredient(i)}
 								class="rounded-md bg-red-100 px-3 py-2 text-sm text-red-800 hover:cursor-pointer hover:bg-red-200 hover:transition"
 							>
-								Remove
+								Eemalda
 							</button>
 						</div>
 					{/each}
@@ -215,7 +193,7 @@
 				<button
 					on:click={deleteRecipe}
 					class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:cursor-pointer hover:bg-red-800 hover:transition"
-					title="Delete recipe"
+					title="Kustuta retsept"
 				>
 					Kustuta
 				</button>

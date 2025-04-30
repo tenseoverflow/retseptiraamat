@@ -1,4 +1,5 @@
-const API_BASE = 'http://localhost:5000/api';
+// Get API URL from environment or use fallback
+const API_BASE = import.meta.env.API_URL || 'http://localhost:5036/api';
 
 export async function getFridgeItems() {
     const response = await fetch(`${API_BASE}/FridgeItem`);

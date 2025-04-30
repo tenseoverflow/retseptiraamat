@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { getRecipes } from '$lib/api';
 
 	interface Recipe {
 		id: number;
@@ -17,8 +18,7 @@
 
 	onMount(async () => {
 		try {
-			const response = await fetch('http://localhost:5036/api/Recipe');
-			recipes = await response.json();
+			recipes = await getRecipes();
 		} catch (e) {
 			error = 'Retseptide laadimine ebaõnnestus';
 		} finally {
@@ -29,7 +29,7 @@
 
 <div class="container mx-auto p-4">
 	<div class="mb-6 flex items-center justify-between">
-		<h1 class="text-2xl font-bold">Retseptid</h1>
+		<h1 class="text-3xl font-bold">Retseptid</h1>
 		<a
 			href="/recipes/add"
 			class="bg-primary text-secondary rounded-md px-4 py-2 font-semibold hover:text-gray-700 hover:transition"

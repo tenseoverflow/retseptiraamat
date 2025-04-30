@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { getRecipes, getFridgeItems } from '$lib/api';
 
 	interface Recipe {
 		id: number;
@@ -50,13 +51,9 @@
 
 	onMount(async () => {
 		try {
-			// Fetch all recipes
-			const recipeResponse = await fetch('http://localhost:5036/api/Recipe');
-			recipes = await recipeResponse.json();
-
-			// Fetch all fridge items
-			const fridgeResponse = await fetch('http://localhost:5036/api/Fridge');
-			fridgeItems = await fridgeResponse.json();
+			// Fetch all recipes and fridge items using our API utility
+			recipes = await getRecipes();
+			fridgeItems = await getFridgeItems();
 
 			// Filter recipes that can be made with the current fridge inventory
 			availableRecipes = recipes.filter((recipe) => canMakeRecipe(recipe, fridgeItems));
@@ -89,7 +86,9 @@
 					<div class="rounded-lg bg-white p-8 text-center shadow-md">
 						<h2 class="mb-2 text-xl font-semibold">Pole ühtegi retsepti, mida saaksid teha</h2>
 						<p class="mb-4 text-gray-600">Mine ostlema!</p>
-						<div class="flex flex-col space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0">
+						<div
+							class="flex flex-col justify-center space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0"
+						>
 							<a
 								href="/fridge"
 								class="bg-primary text-secondary rounded-md px-4 py-2 text-center font-semibold hover:text-gray-700 hover:transition"
@@ -98,7 +97,7 @@
 							</a>
 							<a
 								href="/recipes"
-								class="rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-gray-700 hover:bg-gray-50"
+								class="rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-gray-700 hover:bg-gray-50 hover:transition"
 							>
 								Kõik retseptid
 							</a>
