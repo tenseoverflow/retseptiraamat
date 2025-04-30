@@ -1,4 +1,3 @@
-
 services:
   # Backend API - Development
   backend-dev:
@@ -16,7 +15,7 @@ services:
       - ./backend:/app
     networks:
       - app-network
-    
+
   # Frontend - Development
   frontend-dev:
     build:
@@ -40,8 +39,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Server=vhk-12r.database.windows.net;Database=HelloWorld;User=HelloWorld;Password=${DB_PASSWORD};TrustServerCertificate=True;
-    ports:
-      - "8080:80"
     depends_on:
       db:
         condition: service_healthy
@@ -54,7 +51,7 @@ services:
       context: ./frontend-svelte
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8099:80"
     environment:
       - API_URL=http://backend-prod
     depends_on:

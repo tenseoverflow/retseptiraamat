@@ -26,12 +26,25 @@ namespace backend.Controller
             return Ok(fridgeItems);
         }
 
+        [HttpGet("aggregated")]
+        public async Task<ActionResult<Dictionary<string, int>>> GetAggregatedIngredients()
+        {
+            var aggregatedIngredients = await _fridgeService.GetAggregatedIngredientsAsync();
+            return Ok(aggregatedIngredients);
+        }
+
         [HttpPost]
         public async Task<ActionResult> AddFridgeItem([FromBody] FridgeItem fridgeItem)
         {
             if (fridgeItem == null)
             {
                 return BadRequest("Invalid fridge item.");
+            }
+
+            // Check if an ingredient with the same name already exists
+            if (await _fridgeService.IngredientExistsAsync(fridgeItem.Ingredient))
+            {
+                return BadRequest("An ingredient with this name already exists. Please update the existing ingredient instead of adding a duplicate.");
             }
 
             await _fridgeService.CreateAsync(fridgeItem);

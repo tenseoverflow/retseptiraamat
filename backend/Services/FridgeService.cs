@@ -41,9 +41,18 @@ namespace backend.Services
 
         public async Task UpdateAsync(FridgeItem fridgeItem)
         {
-            fridgeItem.LastUpdated = DateTime.UtcNow;
-            _context.Entry(fridgeItem).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            // Fix the tracking issue by fetching the entity first and then updating its properties
+            var existingItem = await _context.FridgeItems.FindAsync(fridgeItem.Id);
+            if (existingItem != null)
+            {
+                // Update the properties of the tracked entity
+                existingItem.Ingredient = fridgeItem.Ingredient;
+                existingItem.Amount = fridgeItem.Amount;
+                existingItem.LastUpdated = DateTime.UtcNow;
+                
+                // Save changes
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteAsync(int id)
@@ -54,6 +63,33 @@ namespace backend.Services
                 _context.FridgeItems.Remove(fridgeItem);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<bool> IngredientExistsAsync(string ingredientName)
+        {
+            // Check if an ingredient with the same name already exists (case-insensitive comparison)
+            return await _context.FridgeItems.AnyAsync(i => 
+                i.Ingredient.ToLower() == ingredientName.ToLower());
+        }
+
+        public async Task<Dictionary<string, int>> GetAggregatedIngredientsAsync()
+        {
+            var allIngredients = await _context.FridgeItems.ToListAsync();
+            var aggregatedIngredients = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            
+            foreach (var item in allIngredients)
+            {
+                if (aggregatedIngredients.ContainsKey(item.Ingredient))
+                {
+                    aggregatedIngredients[item.Ingredient] += item.Amount;
+                }
+                else
+                {
+                    aggregatedIngredients.Add(item.Ingredient, item.Amount);
+                }
+            }
+            
+            return aggregatedIngredients;
         }
     }
 }
