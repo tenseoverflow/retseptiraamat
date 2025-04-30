@@ -26,22 +26,22 @@
 
 	// Function to determine if a recipe can be made with available ingredients
 	function canMakeRecipe(recipe: Recipe, fridgeItems: FridgeItem[]): boolean {
-		// Create a dictionary of ingredients in fridge with amounts
+		if (!recipe || !fridgeItems.length) return false;
+
+		// Create a map of ingredients from fridge for easier lookup
 		const fridgeIngredients = fridgeItems.reduce(
-			(acc, item) => {
-				acc[item.ingredient.toLowerCase()] = item.amount;
-				return acc;
+			(map, item) => {
+				map[item.ingredient.toLowerCase()] =
+					(map[item.ingredient.toLowerCase()] || 0) + item.amount;
+				return map;
 			},
 			{} as Record<string, number>
 		);
 
-		// Check if all ingredients from the recipe are available in sufficient quantity
-		for (const [ingredient, requiredAmount] of Object.entries(recipe.ingredients)) {
-			const ingredientName = ingredient.toLowerCase();
-			if (
-				!fridgeIngredients[ingredientName] ||
-				fridgeIngredients[ingredientName] < requiredAmount
-			) {
+		// Check if all recipe ingredients are available in sufficient quantities
+		for (const [ingredient, amount] of Object.entries(recipe.ingredients)) {
+			const ingredientLower = ingredient.toLowerCase();
+			if (!fridgeIngredients[ingredientLower] || fridgeIngredients[ingredientLower] < amount) {
 				return false;
 			}
 		}
@@ -51,11 +51,13 @@
 
 	onMount(async () => {
 		try {
-			// Fetch all recipes and fridge items using our API utility
-			recipes = await getRecipes();
-			fridgeItems = await getFridgeItems();
+			// Load both recipes and fridge items in parallel
+			const [recipesData, fridgeData] = await Promise.all([getRecipes(), getFridgeItems()]);
 
-			// Filter recipes that can be made with the current fridge inventory
+			recipes = recipesData;
+			fridgeItems = fridgeData;
+
+			// Filter recipes that can be made with available ingredients
 			availableRecipes = recipes.filter((recipe) => canMakeRecipe(recipe, fridgeItems));
 		} catch (e) {
 			error = 'Andmete laadimine ebaõnnestus';
@@ -73,7 +75,6 @@
 			{error}
 		</div>
 	{/if}
-
 	{#if loading}
 		<div class="flex justify-center py-12">
 			<p class="text-gray-500">Laen retsepte...</p>

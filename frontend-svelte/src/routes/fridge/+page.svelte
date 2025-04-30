@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { getFridgeItems, createFridgeItem, deleteFridgeItem, updateFridgeItem } from '$lib/api';
+	import { showError, showSuccess } from '$lib/toast';
 
 	interface FridgeItem {
 		id: number;
@@ -12,8 +13,6 @@
 	let fridgeItems: FridgeItem[] = [];
 	let newItem = { ingredient: '', amount: 0 };
 	let loading = true;
-	let error = '';
-	let success = '';
 	let editingItem: FridgeItem | null = null;
 	let editAmount: number = 0;
 
@@ -21,7 +20,7 @@
 		try {
 			fridgeItems = await getFridgeItems();
 		} catch (e) {
-			error = 'Külmkapi sisu laadimine ebaõnnestus';
+			showError('Külmkapi sisu laadimine ebaõnnestus');
 		} finally {
 			loading = false;
 		}
@@ -29,28 +28,24 @@
 
 	async function addItem() {
 		try {
+			// Check if amount is zero
+			if (newItem.ingredient && newItem.amount === 0) {
+				showError(`Koostisosa "${newItem.ingredient}" kogus ei saa olla 0`);
+				return;
+			}
+
 			const itemToAdd = { ...newItem, lastUpdated: new Date().toISOString() };
 			const addedItem = await createFridgeItem(itemToAdd);
 			fridgeItems = [...fridgeItems, addedItem];
 			newItem = { ingredient: '', amount: 0 };
-			success = 'Koostisosa lisatud edukalt!';
-
-			// Clear success message after 3 seconds
-			setTimeout(() => {
-				success = '';
-			}, 3000);
+			showSuccess('Koostisosa lisatud edukalt!');
 		} catch (e) {
 			// Check if error contains a duplicate ingredient message
 			if (e instanceof Error && e.message.includes('already exists')) {
-				error = e.message;
+				showError(e.message);
 			} else {
-				error = 'Koostisosa lisamine ebaõnnestus';
+				showError('Koostisosa lisamine ebaõnnestus');
 			}
-
-			// Clear error message after 5 seconds
-			setTimeout(() => {
-				error = '';
-			}, 5000);
 		}
 	}
 
@@ -59,18 +54,9 @@
 			try {
 				await deleteFridgeItem(id);
 				fridgeItems = fridgeItems.filter((item) => item.id !== id);
-				success = 'Koostisosa kustutatud edukalt!';
-
-				// Clear success message after 3 seconds
-				setTimeout(() => {
-					success = '';
-				}, 3000);
+				showSuccess('Koostisosa kustutatud edukalt!');
 			} catch (e) {
-				error = 'Koostisosa kustutamine ebaõnnestus';
-				// Clear error message after 3 seconds
-				setTimeout(() => {
-					error = '';
-				}, 3000);
+				showError('Koostisosa kustutamine ebaõnnestus');
 			}
 		}
 	}
@@ -88,6 +74,12 @@
 		if (!editingItem) return;
 
 		try {
+			// Check if edit amount is zero
+			if (editAmount === 0) {
+				showError(`Koostisosa "${editingItem.ingredient}" kogus ei saa olla 0`);
+				return;
+			}
+
 			const updatedItem = {
 				...editingItem,
 				amount: editAmount,
@@ -99,22 +91,12 @@
 			// Update the item in the local array
 			fridgeItems = fridgeItems.map((item) => (item.id === editingItem!.id ? updatedItem : item));
 
-			success = 'Kogus muudetud edukalt!';
-
-			// Clear success message after 3 seconds
-			setTimeout(() => {
-				success = '';
-			}, 3000);
+			showSuccess('Kogus muudetud edukalt!');
 
 			// Reset editing state
 			editingItem = null;
 		} catch (e) {
-			error = 'Koostisosa muutmine ebaõnnestus';
-
-			// Clear error message after 5 seconds
-			setTimeout(() => {
-				error = '';
-			}, 5000);
+			showError('Koostisosa muutmine ebaõnnestus');
 		}
 	}
 </script>
@@ -123,18 +105,6 @@
 	<div class="mb-6 flex items-center justify-between">
 		<h1 class="text-3xl font-bold">Külmkapi sisu</h1>
 	</div>
-
-	{#if error}
-		<div class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-			{error}
-		</div>
-	{/if}
-
-	{#if success}
-		<div class="mb-4 rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700">
-			{success}
-		</div>
-	{/if}
 
 	<div class="mb-8 rounded-lg bg-white p-6 shadow-md">
 		<h2 class="mb-4 text-xl font-semibold">Lisa uus koostisosa</h2>

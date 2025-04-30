@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { page } from '$app/stores';
 	import { writable } from 'svelte/store';
+	import { Toaster } from 'svelte-french-toast';
 
 	let { children } = $props();
 	const isMenuOpen = writable(false);
@@ -156,3 +157,5 @@
 		</div>
 	</main>
 </div>
+
+<Toaster />

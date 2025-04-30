@@ -1,17 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createRecipe } from '$lib/api';
-
-	interface Ingredient {
-		name: string;
-		amount: number;
-	}
+	import { showError, showSuccess } from '$lib/toast';
 
 	let title = '';
 	let description = '';
-	let ingredients: Ingredient[] = [{ name: '', amount: 0 }];
-	let error = '';
-	let success = '';
+	let ingredients: { name: string; amount: number }[] = [{ name: '', amount: 0 }];
+	let isAdding = false;
 
 	function addIngredient() {
 		ingredients = [...ingredients, { name: '', amount: 0 }];
@@ -22,56 +17,57 @@
 	}
 
 	async function addRecipe() {
+		if (isAdding) return; // Prevent multiple submissions
+
 		try {
+			isAdding = true;
+
+			// Check for ingredients with zero amount
+			const zeroAmountIngredients = ingredients.filter((ing) => ing.name && ing.amount === 0);
+			if (zeroAmountIngredients.length > 0) {
+				showError(`Koostisosa "${zeroAmountIngredients[0].name}" kogus ei saa olla 0`);
+				isAdding = false;
+				return;
+			}
+
 			// Convert ingredients array to object format required by API
 			const ingredientsObject = ingredients.reduce(
-				(obj, ingredient) => {
-					if (ingredient.name) {
-						obj[ingredient.name] = ingredient.amount;
+				(obj, ing) => {
+					if (ing.name) {
+						obj[ing.name] = ing.amount;
 					}
 					return obj;
 				},
 				{} as Record<string, number>
 			);
 
+			// Create recipe payload
 			const recipeData = {
 				title,
 				description,
-				ingredients: ingredientsObject
+				ingredients: ingredientsObject,
+				createdAt: new Date().toISOString()
 			};
 
+			// Add recipe via API
 			await createRecipe(recipeData);
-			success = 'Retsept lisatud edukalt!';
 
-			// Reset form
-			title = '';
-			description = '';
-			ingredients = [{ name: '', amount: 0 }];
+			showSuccess('Retsept lisatud edukalt!');
 
-			// Navigate to recipes list after 2 seconds
+			// Redirect to recipes list after a short delay
 			setTimeout(() => {
 				goto('/recipes');
-			}, 2000);
+			}, 1000);
 		} catch (e) {
-			error = 'Retsepti lisamine ebaõnnestus';
+			showError('Retsepti lisamine ebaõnnestus');
+		} finally {
+			isAdding = false;
 		}
 	}
 </script>
 
 <div class="container mx-auto p-4">
 	<h1 class="mb-6 text-2xl font-bold">Lisa uus retsept</h1>
-
-	{#if error}
-		<div class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-			{error}
-		</div>
-	{/if}
-
-	{#if success}
-		<div class="mb-4 rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700">
-			{success}
-		</div>
-	{/if}
 
 	<form class="space-y-6" on:submit|preventDefault={addRecipe}>
 		<div>
@@ -112,8 +108,11 @@
 				{#each ingredients as ingredient, i}
 					<div class="flex items-end gap-4">
 						<div class="flex-1">
-							<label class="block text-sm font-medium text-gray-700">Nimetus</label>
+							<label for="ingredient-name-{i}" class="block text-sm font-medium text-gray-700"
+								>Nimetus</label
+							>
 							<input
+								id="ingredient-name-{i}"
 								type="text"
 								bind:value={ingredient.name}
 								class="focus:border-primary focus:ring-primary mt-1 block w-full rounded-md border-gray-300 shadow-sm"
@@ -121,8 +120,11 @@
 							/>
 						</div>
 						<div class="w-32">
-							<label class="block text-sm font-medium text-gray-700">Kogus</label>
+							<label for="ingredient-amount-{i}" class="block text-sm font-medium text-gray-700"
+								>Kogus</label
+							>
 							<input
+								id="ingredient-amount-{i}"
 								type="number"
 								bind:value={ingredient.amount}
 								class="focus:border-primary focus:ring-primary mt-1 block w-full rounded-md border-gray-300 shadow-sm"
@@ -152,9 +154,12 @@
 			</a>
 			<button
 				type="submit"
-				class="bg-primary text-secondary rounded-md px-4 py-2 text-sm font-semibold shadow-sm hover:text-gray-700 hover:transition"
+				disabled={isAdding}
+				class="bg-primary text-secondary rounded-md px-4 py-2 text-sm font-semibold shadow-sm hover:text-gray-700 hover:transition {isAdding
+					? 'cursor-not-allowed opacity-70'
+					: ''}"
 			>
-				Lisa retsept
+				{isAdding ? 'Lisan...' : 'Lisa retsept'}
 			</button>
 		</div>
 	</form>

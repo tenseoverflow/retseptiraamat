@@ -31,7 +31,33 @@ export async function updateRecipe(id: number, recipe: any) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(recipe)
     });
-    return await response.json();
+    
+    if (!response.ok) {
+        const errorText = await response.text();
+        let errorMessage = 'Failed to update recipe';
+        
+        try {
+            // Try to parse as JSON if possible
+            const errorData = JSON.parse(errorText);
+            errorMessage = errorData.message || errorData.title || errorMessage;
+        } catch (e) {
+            // If parsing fails, use the raw text if available
+            if (errorText) errorMessage = errorText;
+        }
+        
+        throw new Error(errorMessage);
+    }
+    
+    // Handle empty responses or content-type issues
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+        // If response has JSON content, parse and return it
+        const text = await response.text();
+        return text ? JSON.parse(text) : {}; // Safe parsing with empty check
+    }
+    
+    // For non-JSON or empty responses, just return success indicator
+    return { success: true };
 }
 
 export async function deleteRecipe(id: number) {
@@ -92,18 +118,40 @@ export async function removeRecipeIngredientsFromFridge(recipeIngredients: Recor
     // Get all fridge items
     const fridgeItems = await getFridgeItems();
     
-    // Find matching ingredients (case-insensitive)
-    const matchingItems = fridgeItems.filter(item => {
-        // Check if this fridge item's ingredient name exists in the recipe ingredients (case insensitive)
-        return Object.keys(recipeIngredients).some(
+    // Track updated and removed items
+    const updatedItems: any[] = [];
+    const removedItems: any[] = [];
+    
+    // Process each fridge item
+    for (const item of fridgeItems) {
+        // Check if this fridge item's ingredient exists in the recipe (case insensitive)
+        const recipeIngredientKey = Object.keys(recipeIngredients).find(
             ingredient => ingredient.toLowerCase() === item.ingredient.toLowerCase()
         );
-    });
+        
+        if (recipeIngredientKey) {
+            const amountToRemove = recipeIngredients[recipeIngredientKey];
+            
+            // If recipe requires more or equal to what we have, remove the item
+            if (amountToRemove >= item.amount) {
+                await deleteFridgeItem(item.id);
+                removedItems.push(item);
+            } else {
+                // Otherwise, just update with reduced amount
+                const updatedItem = {
+                    ...item,
+                    amount: item.amount - amountToRemove,
+                    lastUpdated: new Date().toISOString()
+                };
+                await updateFridgeItem(item.id, updatedItem);
+                updatedItems.push(updatedItem);
+            }
+        }
+    }
     
-    // Delete all matching items
-    const deletePromises = matchingItems.map(item => deleteFridgeItem(item.id));
-    await Promise.all(deletePromises);
-    
-    // Return the deleted items for confirmation message
-    return matchingItems;
+    // Return both updated and removed items for confirmation message
+    return {
+        updated: updatedItems,
+        removed: removedItems
+    };
 }
