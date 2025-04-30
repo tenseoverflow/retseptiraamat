@@ -2,6 +2,8 @@
 
 Retseptiraamat on veebirakendus, mis aitab hallata ja jagada retsepte ning hoida silma peal külmkapis olevatel toiduainetel.
 
+Favicon from Material Symbols.
+
 ## Paigaldusjuhend
 
 ### Paigaldamine ja käivitamine productionis
