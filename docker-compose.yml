@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=vhk-12r.database.windows.net;Database=HelloWorld;User=HelloWorld;Password=${DB_PASSWORD};TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=${DB_HOST};Database=${DB_NAME};User=${DB_NAME};Password=${DB_PASSWORD};TrustServerCertificate=True;
       - ASPNETCORE_URLS=http://+:80
       - ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
     ports:
@@ -44,7 +44,7 @@ services:
       - "8098:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Server=vhk-12r.database.windows.net;Database=HelloWorld;User=HelloWorld;Password=${DB_PASSWORD};TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=${DB_HOST};Database=${DB_NAME};User=${DB_NAME};Password=${DB_PASSWORD};TrustServerCertificate=True;
     restart: always
     profiles: ["prod"]
 
@@ -54,11 +54,13 @@ services:
       context: ./frontend-svelte
       dockerfile: Dockerfile
       args:
-        VITE_API_URL: "http://localhost:8098"
+        VITE_API_URL: "${ORIGIN_URL}"
     ports:
       - "8099:3000"
     depends_on:
       - backend-prod
+    environment:
+      - ORIGIN=${ORIGIN_URL}
     restart: always
     profiles: ["prod"]
 
