@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   # Backend API - Development
   backend-dev:
@@ -15,6 +17,7 @@ services:
       - ./backend:/app
     networks:
       - app-network
+    profiles: ["dev"]
 
   # Frontend - Development
   frontend-dev:
@@ -30,6 +33,7 @@ services:
       - PUBLIC_API_URL=http://localhost:5000/
     depends_on:
       - backend-dev
+    profiles: ["dev"]
 
   # Backend API - Production
   backend-prod:
@@ -39,11 +43,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Server=vhk-12r.database.windows.net;Database=HelloWorld;User=HelloWorld;Password=${DB_PASSWORD};TrustServerCertificate=True;
-    depends_on:
-      db:
-        condition: service_healthy
     restart: always
     profiles: ["prod"]
+    networks:
+      - app-network
 
   # Frontend - Production
   frontend-prod:
@@ -58,6 +61,8 @@ services:
       - backend-prod
     restart: always
     profiles: ["prod"]
+    networks:
+      - app-network
 
 networks:
   app-network:
