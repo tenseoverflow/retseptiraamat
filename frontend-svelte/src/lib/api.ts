@@ -1,5 +1,5 @@
 // Get API URL from environment or use fallback
-const API_URL = import.meta.env.API_URL || 'http://localhost:5036';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5036';
 const API_BASE = `${API_URL}/api`;
 
 // Recipe API functions
