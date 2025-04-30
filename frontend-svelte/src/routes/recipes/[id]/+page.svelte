@@ -28,7 +28,12 @@
 		// Check if all recipe ingredients are available in sufficient quantities
 		for (const [ingredient, amount] of Object.entries(recipe.ingredients)) {
 			const ingredientLower = ingredient.toLowerCase();
-			if (!fridgeIngredients[ingredientLower] || fridgeIngredients[ingredientLower] < amount) {
+			// Cast amount to number as Object.entries returns unknown for values
+			const numericAmount = amount as number;
+			if (
+				!fridgeIngredients[ingredientLower] ||
+				fridgeIngredients[ingredientLower] < numericAmount
+			) {
 				return false;
 			}
 		}

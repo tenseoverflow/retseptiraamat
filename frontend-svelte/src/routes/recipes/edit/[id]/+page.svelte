@@ -196,6 +196,7 @@
 
 			<div class="flex justify-end gap-x-2">
 				<button
+					type="button"
 					on:click={deleteRecipe}
 					class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:cursor-pointer hover:bg-red-800 hover:transition"
 					title="Kustuta retsept"

@@ -156,16 +156,21 @@
 			<p class="text-gray-500">Alusta mõne koostisosa lisamisega</p>
 		</div>
 	{:else}
-		<div class="overflow-hidden rounded-lg bg-white shadow-md">
+		<!-- Desktop view - Table -->
+		<div class="hidden overflow-hidden rounded-lg bg-white shadow-md md:block">
 			<table class="min-w-full divide-y divide-gray-200">
 				<thead class="bg-gray-50">
 					<tr>
-						<th class="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500"
+						<th class="w-2/5 px-6 py-3 text-left text-xs font-medium uppercase text-gray-500"
 							>Koostisosa</th
 						>
-						<th class="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500">Kogus</th>
-						<th class="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500">Lisatud</th>
-						<th class="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500"
+						<th class="w-1/6 px-6 py-3 text-left text-xs font-medium uppercase text-gray-500"
+							>Kogus</th
+						>
+						<th class="w-1/6 px-6 py-3 text-left text-xs font-medium uppercase text-gray-500"
+							>Lisatud</th
+						>
+						<th class="w-1/4 px-6 py-3 text-right text-xs font-medium uppercase text-gray-500"
 							>Tegevused</th
 						>
 					</tr>
@@ -188,7 +193,7 @@
 								{/if}
 							</td>
 							<td class="px-6 py-4">{new Date(item.lastUpdated).toLocaleDateString()}</td>
-							<td class="flex space-x-2 px-6 py-4">
+							<td class="flex justify-end space-x-2 px-6 py-4">
 								{#if editingItem && editingItem.id === item.id}
 									<button
 										on:click={saveEdit}
@@ -221,6 +226,65 @@
 					{/each}
 				</tbody>
 			</table>
+		</div>
+
+		<!-- Mobile view - Cards -->
+		<div class="space-y-4 md:hidden">
+			{#each fridgeItems as item}
+				<div class="rounded-lg bg-white p-4 shadow-md">
+					<div class="mb-2 flex justify-between">
+						<h3 class="text-lg font-medium">{item.ingredient}</h3>
+						<span class="text-sm text-gray-500"
+							>{new Date(item.lastUpdated).toLocaleDateString()}</span
+						>
+					</div>
+
+					<div class="mb-4 flex items-center">
+						<span class="mr-2 font-medium">Kogus:</span>
+						{#if editingItem && editingItem.id === item.id}
+							<input
+								type="number"
+								bind:value={editAmount}
+								min="0"
+								step="1"
+								class="focus:border-primary focus:ring-primary w-20 rounded-md border-gray-300 shadow-sm"
+							/>
+						{:else}
+							<span>{item.amount}</span>
+						{/if}
+					</div>
+
+					<div class="flex justify-end space-x-3">
+						{#if editingItem && editingItem.id === item.id}
+							<button
+								on:click={saveEdit}
+								class="bg-primary hover:text-secondary rounded-md px-3 py-2 text-sm text-gray-700 hover:cursor-pointer hover:transition"
+							>
+								Salvesta
+							</button>
+							<button
+								on:click={cancelEditing}
+								class="rounded-md bg-gray-100 px-3 py-2 text-sm text-gray-700 hover:cursor-pointer hover:bg-gray-200 hover:transition"
+							>
+								Tühista
+							</button>
+						{:else}
+							<button
+								on:click={() => startEditing(item)}
+								class="rounded-md bg-blue-100 px-3 py-2 text-sm text-gray-700 hover:cursor-pointer hover:bg-blue-200 hover:transition"
+							>
+								Muuda
+							</button>
+							<button
+								on:click={() => removeItem(item.id)}
+								class="rounded-md bg-red-100 px-3 py-2 text-sm text-red-800 hover:cursor-pointer hover:bg-red-200 hover:transition"
+							>
+								Kustuta
+							</button>
+						{/if}
+					</div>
+				</div>
+			{/each}
 		</div>
 	{/if}
 </div>

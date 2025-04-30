@@ -76,7 +76,7 @@
 						type="button"
 						class="hover:bg-primary-dark inline-flex cursor-pointer items-center justify-center rounded-md p-2"
 						aria-expanded={$isMenuOpen}
-						on:click={() => isMenuOpen.update((value) => !value)}
+						onclick={() => isMenuOpen.update((value) => !value)}
 					>
 						<span class="sr-only">Ava menüü</span>
 						<svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -111,7 +111,7 @@
 							.pathname === '/'
 							? 'text-primary-dark'
 							: ''}"
-						on:click={() => isMenuOpen.set(false)}
+						onclick={() => isMenuOpen.set(false)}
 					>
 						Kodu
 					</a>
@@ -122,7 +122,7 @@
 						)
 							? 'text-primary-dark'
 							: ''}"
-						on:click={() => isMenuOpen.set(false)}
+						onclick={() => isMenuOpen.set(false)}
 					>
 						Retseptid
 					</a>
@@ -132,7 +132,7 @@
 							.pathname === '/fridge'
 							? 'text-primary-dark'
 							: ''}"
-						on:click={() => isMenuOpen.set(false)}
+						onclick={() => isMenuOpen.set(false)}
 					>
 						Külmkapp
 					</a>
@@ -142,7 +142,7 @@
 							.pathname === '/recipes/add'
 							? 'bg-primary-dark'
 							: ''}"
-						on:click={() => isMenuOpen.set(false)}
+						onclick={() => isMenuOpen.set(false)}
 					>
 						Lisa retsept
 					</a>
